@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Надежда — английский для детей</title>
+  <style>
+    :root{
+      --paper:#fbf7ee;
+      --paper-2:#fffdf8;
+      --ink:#2b2b2b;
+      --accent-1:#ffd66e; /* sunny */
+      --accent-2:#a7e7ff; /* sky */
+      --accent-3:#c9f3b4; /* mint */
+      --accent-4:#ffb7d5; /* pink */
+      --accent-5:#b9b5ff; /* lilac */
+      --tape:#f0e0b8;
+      --shadow: 0 12px 30px rgba(0,0,0,.12);
+      --radius: 22px;
+      --radius-sm: 14px;
+    }
+
+    *{box-sizing:border-box;}
+    body{
+      margin:0; color:var(--ink);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1200px 600px at 10% -10%, #fff 0%, transparent 60%),
+        radial-gradient(900px 500px at 110% 0%, #fff 0%, transparent 55%),
+        repeating-linear-gradient(0deg, rgba(0,0,0,.035), rgba(0,0,0,.035) 1px, transparent 1px, transparent 14px),
+        var(--paper);
+      min-height:100vh;
+    }
+
+    /* notebook ring */
+    .ring{
+      position:fixed; left:16px; top:0; bottom:0; width:16px; pointer-events:none; opacity:.65;
+      background:
+        repeating-radial-gradient(circle at 50% 22px, #0000 0 9px, rgba(0,0,0,.09) 9px 10px, #0000 10px 22px);
+      mix-blend-mode:multiply;
+      filter: blur(.2px);
+    }
+
+    .wrapper{ max-width:1100px; margin:0 auto; padding:28px 18px 80px; }
+
+    header.hero{
+      position:relative; padding: clamp(22px, 4vw, 40px);
+      background: var(--paper-2);
+      border-radius: min(28px, 4vw);
+      box-shadow: var(--shadow);
+      border: 2.5px dashed rgba(0,0,0,.18);
+      overflow:hidden;
+      transform: rotate(-.4deg);
+    }
+
+    .hero-grid{
+      display:grid; grid-template-columns: 1.2fr .8fr; gap:18px; align-items:center;
+    }
+    @media (max-width: 860px){ .hero-grid{grid-template-columns:1fr; text-align:center;} }
+
+    .title{
+      font-family: "Comic Sans MS", "Segoe Print", "Bradley Hand", cursive;
+      font-size: clamp(30px, 4.5vw, 54px);
+      line-height:1.05; margin:0 0 10px;
+      text-shadow: 0 2px 0 #fff;
+    }
+    .subtitle{
+      font-size: clamp(16px, 2.2vw, 20px);
+      background: #fff; display:inline-block; padding:8px 12px; border-radius: 999px;
+      border:2px solid rgba(0,0,0,.12);
+      transform: rotate(1.5deg);
+    }
+
+    .hero-cta{ margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; }
+    .btn{
+      appearance:none; border:0; cursor:pointer; font-weight:700;
+      padding:12px 16px; border-radius: 14px; background: var(--accent-1);
+      box-shadow: 0 6px 0 rgba(0,0,0,.18);
+      transform: translateY(0); transition: .15s;
+    }
+    .btn:hover{ transform: translateY(-2px) rotate(-.4deg); }
+    .btn:active{ transform: translateY(2px); box-shadow:0 3px 0 rgba(0,0,0,.2); }
+
+    /* Stickers */
+    .stickers{ position:relative; min-height:230px; }
+    .sticker{
+      position:absolute; display:grid; place-items:center; padding:12px 14px;
+      width:max-content; max-width: 190px;
+      font-family: "Comic Sans MS", "Segoe Print", cursive; font-weight:800;
+      border-radius: 18px; border:2px solid rgba(0,0,0,.2);
+      box-shadow: var(--shadow);
+      user-select:none;
+      animation: floaty 4.5s ease-in-out infinite;
+    }
+    .sticker small{ font-weight:600; opacity:.85; }
+    .sticker.s1{ background:var(--accent-2); top:8px; right:8px; --r:8deg; animation-delay:.2s; }
+    .sticker.s2{ background:var(--accent-4); top:90px; right:90px; --r:-7deg; animation-delay:1.4s; }
+    .sticker.s3{ background:var(--accent-3); top:18px; right:150px; --r:-2deg; animation-delay:2.2s; }
+    .sticker.s4{ background:#fff; top:150px; right:0; --r:5deg; animation-delay:3.1s; }
+
+    .tape{
+      position:absolute; width:74px; height:22px; background:var(--tape);
+      top:-6px; left:20px; border-radius:6px;
+      transform: rotate(-6deg);
+      box-shadow: 0 3px 0 rgba(0,0,0,.08) inset;
+      opacity:.95;
+    }
+
+    @keyframes floaty{
+      0%,100%{ transform: translateY(0) rotate(var(--r,0deg)); }
+      50%{ transform: translateY(-6px) rotate(calc(var(--r,0deg) + 1deg)); }
+    }
+
+    main{ margin-top:18px; display:grid; grid-template-columns: repeat(12, 1fr); gap:14px; }
+    @media (max-width: 860px){ main{grid-template-columns:1fr; } }
+
+    section.card{
+      position:relative; background:var(--paper-2); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding:18px 18px 16px;
+      border:2px solid rgba(0,0,0,.14);
+      transform: rotate(var(--tilt, .2deg));
+      overflow:hidden;
+    }
+
+    section.card:before{
+      content:""; position:absolute; inset:-6px; border:2px dashed rgba(0,0,0,.08);
+      border-radius: calc(var(--radius) + 8px);
+      pointer-events:none;
+    }
+
+    .card h2{
+      margin:0 0 8px;
+      font-family: "Comic Sans MS", "Segoe Print", cursive;
+      font-size: clamp(20px, 2.8vw, 26px);
+    }
+
+    .note{ font-size: clamp(15px, 2.2vw, 17px); line-height:1.5; margin:0; }
+
+    .about{ grid-column: span 5; --tilt:-.6deg; }
+    .books{ grid-column: span 7; --tilt:.6deg; background: linear-gradient(180deg, #fff, #fff 50%, #fff7d8 100%); }
+    .why{ grid-column: span 12; background: #ffffff; --tilt:-.2deg; }
+
+    .stick-grid{ margin-top:8px; display:grid; grid-template-columns: repeat(3,1fr); gap:10px; }
+    @media (max-width: 860px){ .stick-grid{grid-template-columns:1fr;} }
+
+    .mini{
+      position:relative; border-radius: 18px; padding:14px 14px 12px;
+      font-weight:700; background: var(--c); border:2px solid rgba(0,0,0,.18);
+      box-shadow: var(--shadow);
+      transform: rotate(var(--t));
+    }
+    .mini:after{
+      content:""; position:absolute; width:62px; height:18px; background:var(--tape);
+      top:-6px; left:14px; border-radius:6px; transform: rotate(-8deg);
+    }
+
+    .incl{ grid-column: span 6; --tilt: .8deg; background:#fff; }
+    .office{ grid-column: span 6; --tilt:-.8deg; background: linear-gradient(180deg, #fff, #f2fff7); }
+
+    .polaroid{
+      margin-top:10px; background:#fff; border-radius: 14px; padding:10px;
+      border:2px solid rgba(0,0,0,.12);
+      box-shadow: 0 10px 18px rgba(0,0,0,.10);
+      transform: rotate(-1deg);
+    }
+    .polaroid .frame{
+      height:160px; border-radius:10px;
+      background:
+        radial-gradient(60px 40px at 20% 20%, #c9f3b4 0%, transparent 60%),
+        radial-gradient(70px 50px at 80% 25%, #a7e7ff 0%, transparent 60%),
+        radial-gradient(90px 60px at 45% 80%, #ffd66e 0%, transparent 60%),
+        repeating-linear-gradient(135deg, #0000, #0000 8px, rgba(0,0,0,.04) 8px, rgba(0,0,0,.04) 10px),
+        #fff;
+      display:grid; place-items:center; font-size:40px;
+    }
+    .polaroid .cap{ font-family:"Comic Sans MS", cursive; font-weight:700; padding:8px 4px 2px; }
+
+    .contacts{ grid-column: span 12; --tilt:.3deg; background:#fff; }
+
+    .contact-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top:8px; }
+    .chip{
+      background: #fff; border:2px dashed rgba(0,0,0,.2);
+      padding:10px 12px; border-radius: 999px; font-weight:700;
+      display:flex; gap:8px; align-items:center;
+      transform: rotate(-.4deg);
+    }
+    .chip b{ font-family:"Comic Sans MS", cursive; }
+
+    .write-btn{
+      margin-top:10px; display:inline-flex; align-items:center; gap:8px;
+      background: var(--accent-5); padding:12px 16px; border-radius: 16px;
+      font-weight:800; border:2px solid rgba(0,0,0,.18);
+      box-shadow: 0 7px 0 rgba(0,0,0,.18);
+      transform: translateY(0) rotate(.6deg); transition:.15s;
+      text-decoration:none; color:inherit;
+    }
+    .write-btn:hover{ transform: translateY(-2px) rotate(-.6deg); }
+
+    /* cute doodles */
+    .doodle{ position:absolute; opacity:.25; font-size: 46px; }
+    .d1{ right:10px; bottom:6px; transform: rotate(10deg); }
+    .d2{ left:12px; bottom:8px; transform: rotate(-8deg); }
+
+    /* cartoon helper */
+    .helper{
+      position:fixed; right:16px; bottom:16px; z-index:50;
+      display:flex; align-items:flex-end; gap:10px; pointer-events:none;
+    }
+    .helper .bubble{
+      pointer-events:auto;
+      background:#fff; border:2px dashed rgba(0,0,0,.2);
+      padding:10px 12px; border-radius:16px; max-width:240px;
+      box-shadow: var(--shadow);
+      font-size:14.5px; line-height:1.35;
+      transform: rotate(-1deg);
+    }
+    .helper .bubble .en{
+      font-weight:800;
+      font-family:"Comic Sans MS", cursive;
+      font-size:15px;
+    }
+    .helper .bubble .ru{
+      margin-top:4px; font-size:13px; opacity:.85;
+    }
+    .helper .owl{
+      pointer-events:auto; width:86px; height:86px; border-radius:22px;
+      background: var(--accent-1);
+      border:2px solid rgba(0,0,0,.2);
+      box-shadow: var(--shadow);
+      display:grid; place-items:center; font-size:44px;
+      transform: rotate(2deg);
+      transition:.2s;
+      cursor:pointer;
+    }
+    .helper .owl:hover{ transform: translateY(-3px) rotate(-3deg); }
+
+    /* mini game */
+    .game{ margin-top:10px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+    .game .game-btn{
+      background: var(--accent-2);
+      border:2px solid rgba(0,0,0,.18);
+      padding:10px 12px; border-radius:14px; font-weight:800;
+      box-shadow: 0 6px 0 rgba(0,0,0,.16);
+      cursor:pointer; transform: translateY(0) rotate(-.5deg); transition:.15s;
+    }
+    .game .game-btn:hover{ transform: translateY(-2px) rotate(.6deg); }
+    .game .word-card{
+      display:none; background:#fff; border:2px dashed rgba(0,0,0,.18);
+      padding:10px 12px; border-radius:12px; font-weight:700;
+      transform: rotate(.8deg);
+    }
+    .game .word-card.show{ display:inline-flex; gap:8px; align-items:center; }
+    .game .word{ font-family:"Comic Sans MS", cursive; font-size:18px; }
+    .game .trans{ opacity:.8; font-size:14px; }
+
+    footer{ margin-top:16px; text-align:center; opacity:.7; font-size:14px; }
+
+    /* reveal animation */
+    .reveal{ opacity:0; transform: translateY(14px) rotate(var(--tilt,0deg)); }
+    .reveal.show{ opacity:1; transform: translateY(0) rotate(var(--tilt,0deg)); transition: .6s ease; }
+  </style>
+</head>
+<body>
+  <div class="ring"></div>
+  <div class="wrapper">
+
+    <header class="hero reveal" style="--tilt:-.4deg">
+      <div class="hero-grid">
+        <div>
+          <h1 class="title">Английский для детей<br/>легко и&nbsp;весело!</h1>
+          <div class="subtitle">Групповые занятия с Надеждой ✏️</div>
+          <div class="hero-cta">
+            <a class="write-btn" href="#contacts" aria-label="Перейти к контактам">Написать мне</a>
+            <button class="btn" id="scrollOffice" type="button">Посмотреть кабинет</button>
+          </div>
+        </div>
+        <div class="stickers" aria-hidden="true">
+          <div class="sticker s1">ABC ✨<small>Let’s learn!</small></div>
+          <div class="sticker s2">Let’s play! 🎲</div>
+          <div class="sticker s3">Hello! 👋</div>
+          <div class="sticker s4">⭐ Good job!</div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="card about reveal" id="about">
+        <div class="tape"></div>
+        <h2>Кто я?</h2>
+        <p class="note">Меня зовут <b>Надежда</b> — я репетитор английского языка для детей и веду занятия в <b>группах</b>.</p>
+        <div class="doodle d1">🌈</div>
+      </section>
+
+      <section class="card books reveal" id="books">
+        <div class="tape" style="left:70%; transform:rotate(8deg)"></div>
+        <h2>Как проходят уроки?</h2>
+        <p class="note">Мы занимаемся по <b>зарубежным учебникам</b> и много говорим, играем и практикуемся.</p>
+
+        <!-- Mini-game -->
+        <div class="game" role="group" aria-label="Мини-игра слово дня">
+          <button class="game-btn" id="wordBtn" type="button">🎲 Нажми — слово дня!</button>
+          <div class="word-card" id="wordCard" aria-live="polite">
+            <span class="word" id="wordEn">cat</span>
+            <span>—</span>
+            <span class="trans" id="wordRu">котик</span>
+            <span id="wordEmoji">🐱</span>
+          </div>
+        </div>
+
+        <div class="doodle d2">📚</div>
+      </section>
+
+      <section class="card why reveal" id="why">
+        <h2>Почему стоит выбрать меня?</h2>
+        <div class="stick-grid">
+          <div class="mini" style="--c:var(--accent-4); --t:-1.2deg">Я люблю свою работу ❤️</div>
+          <div class="mini" style="--c:var(--accent-2); --t:1.1deg">Постоянно учусь новому, чтобы уроки были ещё интереснее ✨</div>
+          <div class="mini" style="--c:var(--accent-3); --t:-.6deg">Принимаю темп каждого ученика: любой результат — это результат 🌱</div>
+        </div>
+      </section>
+
+      <section class="card incl reveal" id="inclusive">
+        <div class="tape"></div>
+        <h2>Инклюзивные занятия</h2>
+        <p class="note">Я работаю с детьми с <b>ОВЗ</b>.</p>
+        <p class="note">Прошла повышение квалификации и получила <b>красный диплом педагога инклюзивного образования</b>.</p>
+        <p class="note">У меня есть <b>адаптированная программа</b> для таких ребят 💛</p>
+        <div class="doodle d1">🤝</div>
+      </section>
+
+      <section class="card office reveal" id="office">
+        <div class="tape" style="left:58%"></div>
+        <h2>Мой кабинет</h2>
+        <p class="note">У меня уютный кабинет, где есть всё для комфортного обучения.</p>
+        <p class="note">Игры, материалы и <b>интерактивная доска</b> — чтобы занятия были живыми 🎯</p>
+      </section>
+
+      <section class="card contacts reveal" id="contacts">
+        <h2>Контакты</h2>
+        <p class="note">Напишите мне — отвечу быстро и всё расскажу 🙂</p>
+        <div class="contact-row">
+          <div class="chip">📞 <b>Телефон:</b> <span data-contact="phone">+7 (___) ___-__-__</span></div>
+          <div class="chip">🟩 <b>WhatsApp:</b> <span data-contact="wa">+7 (___) ___-__-__</span></div>
+          </div>
+        <a class="write-btn" href="mailto:example@mail.com" id="mailBtn">✉️ Написать мне!</a>
+      </section>
+    </main>
+
+    <footer>Сделано с заботой и ластиками ✏️🧡</footer>
+  </div>
+
+  <!-- Cartoon helper (exists in DOM before script runs) -->
+  <div class="helper" aria-live="polite">
+    <div class="bubble" id="helperBubble">
+      <div class="en" id="helperEn">Hi! Let’s learn English through games 🙂</div>
+      <div class="ru" id="helperRu">Привет! Давай учить английский играя 🙂</div>
+    </div>
+    <button class="owl" id="helperOwl" type="button" aria-label="Помощник на сайте">🦉</button>
+  </div>
+
+  <script>
+    // Wrap everything to guarantee DOM is ready even if script is moved
+    window.addEventListener('DOMContentLoaded', () => {
+      // Soft scroll to office
+      document.getElementById('scrollOffice')?.addEventListener('click', () => {
+        document.getElementById('office')?.scrollIntoView({behavior:'smooth', block:'start'});
+      });
+
+      // Reveal on scroll
+      const items = document.querySelectorAll('.reveal');
+      const io = new IntersectionObserver((entries)=>{
+        for(const e of entries){
+          if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); }
+        }
+      }, {threshold:0.12});
+      items.forEach(el=>io.observe(el));
+
+      // Optional: contacts in one place
+      const CONTACTS = {
+        phone: '8-996-379-04-85',
+        wa: '8-996-379-04-85',
+        email: 'nadezhda.english@example.com'
+      };
+      for(const [k,v] of Object.entries(CONTACTS)){
+        const el = document.querySelector(`[data-contact="${k}"]`);
+        if(el) el.textContent = v;
+      }
+      const mailBtn = document.getElementById('mailBtn');
+      if(mailBtn) mailBtn.href = `mailto:${CONTACTS.email}`;
+
+      // Mini-game: word of the day
+      const WORDS = [
+        {en:'cat', ru:'котик', emoji:'🐱'},
+        {en:'sun', ru:'солнышко', emoji:'☀️'},
+        {en:'apple', ru:'яблочко', emoji:'🍎'},
+        {en:'ball', ru:'мячик', emoji:'⚽'},
+        {en:'star', ru:'звёздочка', emoji:'⭐'},
+        {en:'rainbow', ru:'радуга', emoji:'🌈'},
+        {en:'book', ru:'книжка', emoji:'📘'},
+        {en:'fish', ru:'рыбка', emoji:'🐟'},
+      ];
+      const wordBtn = document.getElementById('wordBtn');
+      const wordCard = document.getElementById('wordCard');
+      const wordEn = document.getElementById('wordEn');
+      const wordRu = document.getElementById('wordRu');
+      const wordEmoji = document.getElementById('wordEmoji');
+
+      function pickWord(){
+        const w = WORDS[Math.floor(Math.random()*WORDS.length)];
+        if(wordEn) wordEn.textContent = w.en;
+        if(wordRu) wordRu.textContent = w.ru;
+        if(wordEmoji) wordEmoji.textContent = w.emoji;
+        wordCard?.classList.add('show');
+      }
+      wordBtn?.addEventListener('click', pickWord);
+
+      // Cartoon helper phrases (EN + RU)
+      const helperBubble = document.getElementById('helperBubble');
+      const helperEn = document.getElementById('helperEn');
+      const helperRu = document.getElementById('helperRu');
+      const helperOwl = document.getElementById('helperOwl');
+
+      const PHRASES = [
+        { en: 'Hi! Let’s learn English through games 🙂', ru: 'Привет! Давай учить английский играя 🙂' },
+        { en: 'Want a word of the day? Click the 🎲 button!', ru: 'Хочешь слово дня? Нажми на кнопку 🎲' },
+        { en: 'We speak a lot, play and practice together 🎯', ru: 'На уроках мы много говорим, играем и практикуемся 🎯' },
+        { en: 'Every small step is progress 🌱', ru: 'Каждый маленький шаг — это прогресс 🌱' },
+        { en: 'Questions? Message me in Contacts 💬', ru: 'Есть вопросы? Напиши мне в контактах 💬' },
+      ];
+      let p = 0;
+
+      function setPhrase(i){
+        const ph = PHRASES[i];
+        if(helperEn) helperEn.textContent = ph.en;
+        if(helperRu) helperRu.textContent = ph.ru;
+      }
+
+      if(helperBubble){
+        setPhrase(p);
+        if(window.__owlInterval) clearInterval(window.__owlInterval);
+        window.__owlInterval = setInterval(()=>{
+          p=(p+1)%PHRASES.length; setPhrase(p);
+        }, 5200);
+      }
+      helperOwl?.addEventListener('click', ()=>{
+        p=(p+1)%PHRASES.length; setPhrase(p);
+      });
+
+      // Tiny internal sanity checks (safe, no UI impact)
+      console.assert(!!document.getElementById('helperBubble'), 'helperBubble should exist');
+      console.assert(!!document.getElementById('helperEn'), 'helperEn should exist');
+      console.assert(!!document.getElementById('helperRu'), 'helperRu should exist');
+      console.assert(!!document.getElementById('wordBtn'), 'wordBtn should exist');
+    });
+  </script>
+</body>
+</html>
